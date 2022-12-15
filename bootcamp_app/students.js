@@ -16,17 +16,15 @@ JOIN cohorts ON cohorts.id = cohort_id
 WHERE cohorts.name LIKE $1
 LIMIT $2;
 `;
-// .then(res => {
-//   res.rows.forEach(user => {
-//     console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
-//   })
-// });
 
 const cohortName = process.argv[2];
 const limit = process.argv[3] || 5;
 
 const values = [`%${cohortName}%`, limit];
 
-pool.query(queryString, values);
-
-// console.log(process.argv);
+pool.query(queryString, values)
+.then(res => {
+  res.rows.forEach(user => {
+    console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
+  })
+});

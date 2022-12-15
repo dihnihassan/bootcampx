@@ -34,14 +34,14 @@ JOIN students ON assistance_requests.student_id = students.id
 JOIN cohorts ON students.cohort_id = cohorts.id
 WHERE cohorts.name = $1
 ORDER BY teachers.name;
-`
-// .then(res => {
-//   res.rows.forEach(row => {
-//     console.log(`${row.cohort}: ${row.teacher}`);
-//   })  
-// });  
+`;
 
 const cohortName = process.argv[2] || 'JUL02';
+const values = [`${cohortName}`];
 
-const values = [`%${cohortName}%`];
-pool.query(queryString, values);
+pool.query(queryString, values)
+.then(res => {
+  res.rows.forEach(row => {
+    console.log(`${row.cohort}: ${row.teacher}`);
+  })  
+});  
